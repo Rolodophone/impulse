@@ -3,5 +3,5 @@ import org.openrndr.shape.Circle
 
 class CircleBody(center: Vector2, radius: Double): Body() {
     override var centerOfMass = center
-    override var shape = Circle(center, radius).shape
+    override val shape = Circle(Vector2.ZERO, radius).shape
 }
