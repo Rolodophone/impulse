@@ -29,7 +29,6 @@ abstract class Body {
     }
 
     fun draw() {
-        //mDrawer.fill = ColorRGBa.WHITE
         mDrawer.model = modelMatrix
         mDrawer.shape(shape)
     }
