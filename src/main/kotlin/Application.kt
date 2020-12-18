@@ -48,18 +48,14 @@ fun main() = application {
 
 					point(scaledMousePositionInWorld)
 					text("scaledMousePositionInWorld", scaledMousePositionInWorld)
+
+					lineSegment(scaledMousePositionInWorld, scaledMousePositionInWorld + translation)
 				}
-
-				point(scaledMousePosition)
-				text("scaledMousePosition", scaledMousePosition)
-
-				lineSegment(Vector2(width.toDouble(), height.toDouble()), Vector2(width.toDouble(), height.toDouble()) + translationInTermsOfView)
-				text("translationInTermsOfView", Vector2(width.toDouble(), height.toDouble()) + translationInTermsOfView)
 			}
 
 			return viewMatrix.transform {
-				scale(scaleFactor)
 				translate(translation)
+				scale(scaleFactor)
 			}
 		}
 
