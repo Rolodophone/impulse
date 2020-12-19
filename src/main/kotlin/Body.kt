@@ -22,15 +22,15 @@ abstract class Body {
 
 
     open fun update() {
-        velocity += acceleration * mDeltaTime
-        position += velocity * mDeltaTime
+        velocity += acceleration * pg.deltaTime
+        position += velocity * pg.deltaTime
 
         modelMatrix = transform { translate(position) }
     }
 
     fun draw() {
-        mDrawer.model = modelMatrix
-        mDrawer.shape(shape)
+        pg.drawer.model = modelMatrix
+        pg.drawer.shape(shape)
     }
 
     fun applyForce(force: Vector2) {
