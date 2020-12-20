@@ -25,7 +25,7 @@ object Grid {
 			y += scaledDivisionSize
 		}
 
-		pg.drawer.stroke = ColorRGBa(.2, .2, .2)
+		pg.drawer.stroke = ColorRGBa(.3, .3, .3, .5)
 		pg.drawer.strokeWeight = 1.0
 		pg.drawer.drawStyle.smooth = false
 
