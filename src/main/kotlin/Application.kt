@@ -1,9 +1,9 @@
 import org.openrndr.MouseButton
 import org.openrndr.Program
-import org.openrndr.UnfocusBehaviour
 import org.openrndr.application
 import org.openrndr.color.ColorRGBa
 import org.openrndr.draw.isolated
+import org.openrndr.extra.noise.Random.simplex
 import org.openrndr.extra.olive.oliveProgram
 import org.openrndr.math.Vector2
 import org.openrndr.math.transforms.transform
@@ -21,7 +21,6 @@ fun main() = application {
 		title = "Impulse"
 		vsync = true
 		windowResizable = true
-		unfocusBehaviour = UnfocusBehaviour.THROTTLE
 	}
 
 	oliveProgram {
@@ -33,6 +32,9 @@ fun main() = application {
 			Vector2(nextDouble(width / cameraMatrix.c0r0), nextDouble(height / cameraMatrix.c0r0)),
 			nextDouble(0.1, 0.5)
 		) })
+
+		//handle UI
+		extend(UIControlManager)
 
 		extend {
 //			//show/hide cursor
@@ -50,6 +52,13 @@ fun main() = application {
 
 			//update bodies
 			bodies.forEach { it.update() }
+
+			bodies.forEachIndexed { i, body ->
+				body.position += Vector2(
+					simplex((i*2).toDouble(), seconds),
+					simplex((i*2+1).toDouble(), seconds)
+				) * deltaTime
+			}
 
 			//draw bodies
 			drawer.isolated {

@@ -6,12 +6,12 @@ import org.openrndr.shape.Shape
 abstract class Body {
 
     /**
-     * The origin for the dimensions for `shape`.
+     * The origin for the dimensions for [shape].
      */
     abstract var position: Vector2
 
     /**
-     * The shape of the body. The origin is given by `position`.
+     * The shape of the body. The origin is given by [position].
      */
     abstract val shape: Shape
 
