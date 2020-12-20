@@ -2,7 +2,6 @@ import org.openrndr.color.ColorRGBa
 import org.openrndr.panel.controlManager
 import org.openrndr.panel.elements.button
 import org.openrndr.panel.elements.div
-import org.openrndr.panel.elements.toggle
 import org.openrndr.panel.style.*
 
 val UIControlManager = pg.controlManager {
@@ -17,17 +16,17 @@ val UIControlManager = pg.controlManager {
 		this.background = Color.RGBa(ColorRGBa.GRAY)
 	}
 
-	styleSheet(has type "slider") {
-		this.marginTop = 25.px
-		this.marginBottom = 25.px
+	styleSheet(has class_ "horiz-line") {
+
 	}
 
 	layout {
 		div("side-bar") {
 			div("tabs") {
 				button {}
-				toggle {}
 			}
+
+			div("horiz-line") {}
 		}
 	}
 }
