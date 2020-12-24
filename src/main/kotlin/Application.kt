@@ -7,11 +7,7 @@ import org.openrndr.extra.noise.Random.simplex
 import org.openrndr.extra.olive.oliveProgram
 import org.openrndr.math.Vector2
 import org.openrndr.math.transforms.transform
-import org.openrndr.panel.controlManager
-import org.openrndr.panel.elements.button
-import org.openrndr.panel.elements.div
-import org.openrndr.panel.elements.toggle
-import org.openrndr.panel.style.*
+import org.openrndr.panel.elements.Toggle
 import kotlin.math.pow
 import kotlin.random.Random.Default.nextDouble
 
@@ -39,58 +35,7 @@ fun main() = application {
 		) })
 
 		//handle UI
-		extend(controlManager {
-
-			styleSheet(has class_ "side-bar") {
-				height = 100.percent
-				width = 260.px
-				display = Display.FLEX
-				flexDirection = FlexDirection.Column
-				paddingLeft = 7.px
-				paddingRight = 7.px
-				background = Color.RGBa(ColorRGBa.GRAY)
-			}
-
-			styleSheet(has class_ "tabs" ) {
-			}
-
-			styleSheet(has type "button") {
-			}
-
-			styleSheet(has class_ "horiz-line") {
-				height = 1.px
-				width = 100.percent
-				background = Color.RGBa(ColorRGBa.WHITE)
-			}
-
-			styleSheet(has class_ "options-tab") {
-				display = Display.BLOCK
-			}
-
-			layout {
-				div("side-bar") {
-					div("tabs") {
-						button {
-							label = "Options"
-						}
-						button {
-							label = "Edit"
-						}
-						button {
-							label = "View"
-						}
-					}
-
-					div("horiz-line") {}
-
-					div("options-tab") {
-						toggle {
-							label = "MyLabel"
-						}
-					}
-				}
-			}
-		})
+		extend(UIControlManager)
 
 		extend {
 //			//show/hide cursor
@@ -127,7 +72,9 @@ fun main() = application {
 			}
 
 			//draw grid
-			drawer.isolated { Grid.draw(cameraMatrix) }
+			if (findElem<Toggle>("grid-button").value) {
+				drawer.isolated { Grid.draw(cameraMatrix) }
+			}
 //
 //			//draw cursor
 //			drawer.stroke = ColorRGBa.GRAY
