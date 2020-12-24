@@ -3,7 +3,7 @@ import org.openrndr.math.Vector2
 import org.openrndr.math.transforms.transform
 import org.openrndr.shape.Shape
 
-abstract class Body {
+abstract class Body: Entity {
 
     /**
      * The origin for the dimensions for [shape].
@@ -21,14 +21,14 @@ abstract class Body {
     private lateinit var modelMatrix: Matrix44
 
 
-    open fun update() {
+    override fun update() {
         velocity += acceleration * pg.deltaTime
         position += velocity * pg.deltaTime
 
         modelMatrix = transform { translate(position) }
     }
 
-    fun draw() {
+    override fun draw() {
         pg.drawer.model = modelMatrix
         pg.drawer.shape(shape)
     }

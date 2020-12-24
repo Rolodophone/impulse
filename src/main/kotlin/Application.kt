@@ -8,12 +8,17 @@ import org.openrndr.extra.olive.oliveProgram
 import org.openrndr.math.Vector2
 import org.openrndr.math.transforms.transform
 import org.openrndr.panel.elements.Toggle
+import org.openrndr.shape.Rectangle
 import kotlin.math.pow
 import kotlin.random.Random.Default.nextDouble
 
 lateinit var pg: Program
 
-val bodies = mutableListOf<Body>()
+val entities = mutableListOf<Entity>()
+
+lateinit var worldViewBounds: Rectangle
+
+var cameraMatrix = transform { scale(200.0) }
 
 fun main() = application {
 	configure {
@@ -25,40 +30,32 @@ fun main() = application {
 	}
 
 	oliveProgram {
-		var cameraMatrix = transform { scale(200.0) }
-		
 		pg = this
+		worldViewBounds = Rectangle(260.0, 0.0, width - 260.0, height.toDouble())
 
-		bodies.addAll(List(10) { CircleBody(
+		//temp - add example bodies
+		entities.addAll(List(10) { CircleBody(
 			Vector2(nextDouble(width / cameraMatrix.c0r0), nextDouble(height / cameraMatrix.c0r0)),
 			nextDouble(0.1, 0.5)
 		) })
 
+
 		//handle UI
 		extend(UIControlManager)
 
+
+		//main loop
 		extend {
-//			//show/hide cursor
-//			if (mouse.position in drawer.bounds) {
-//				mouse.cursorVisible = false
-//			}
-//			else {
-//				val position = mouse.position
-//				println("position1: ${mouse.position}")
-//				mouse.cursorVisible = true
-//				println("position2: ${mouse.position}")
-//				mouse.position = position
-//				println("position3: ${mouse.position}")
-//			}
-
 			//update bodies
-			bodies.forEach { it.update() }
+			entities.forEach { it.update() }
 
-			bodies.forEachIndexed { i, body ->
-				body.position += Vector2(
-					simplex((i*2).toDouble(), seconds),
-					simplex((i*2+1).toDouble(), seconds)
-				) * deltaTime
+			entities.forEachIndexed { i, entity ->
+				if (entity is Body) {
+					entity.position += Vector2(
+						simplex((i * 2).toDouble(), seconds),
+						simplex((i * 2 + 1).toDouble(), seconds)
+					) * deltaTime
+				}
 			}
 
 			//draw bodies
@@ -68,22 +65,17 @@ fun main() = application {
 				fill = ColorRGBa.WHITE
 				view = cameraMatrix
 
-				bodies.forEach { it.draw() }
+				entities.forEach { it.draw() }
 			}
 
 			//draw grid
 			if (findElem<Toggle>("grid-button").value) {
 				drawer.isolated { Grid.draw(cameraMatrix) }
 			}
-//
-//			//draw cursor
-//			drawer.stroke = ColorRGBa.GRAY
-//			drawer.lineSegment(mouse.position.x - 8.0, mouse.position.y, mouse.position.x + 7.0, mouse.position.y)
-//			drawer.lineSegment(mouse.position.x, mouse.position.y - 8.0, mouse.position.x, mouse.position.y + 7.0)
 		}
 
 		mouse.dragged.listen { mouseEvent ->
-			if (mouseEvent.button == MouseButton.RIGHT) {
+			if (mouseEvent.button == MouseButton.RIGHT && mouse.position in worldViewBounds) {
 				//convert mouse displacement in view coordinates to displacement in world coordinates
 				val translation = mouseEvent.dragDisplacement / cameraMatrix.c0r0
 				cameraMatrix = cameraMatrix.transform { translate(translation) }
@@ -91,15 +83,17 @@ fun main() = application {
 		}
 
 		mouse.scrolled.listen { mouseEvent ->
-			val scaleFactor = 1.2.pow(mouseEvent.rotation.y)
+			if (mouse.position in worldViewBounds) {
+				val scaleFactor = 1.2.pow(mouseEvent.rotation.y)
 
-			val mousePositionInWorld = (cameraMatrix.inversed * mouse.position.xy01).xy
-			val scaledMousePositionInWorld = mousePositionInWorld * scaleFactor
-			val translation = mousePositionInWorld - scaledMousePositionInWorld
+				val mousePositionInWorld = (cameraMatrix.inversed * mouse.position.xy01).xy
+				val scaledMousePositionInWorld = mousePositionInWorld * scaleFactor
+				val translation = mousePositionInWorld - scaledMousePositionInWorld
 
-			cameraMatrix = cameraMatrix.transform {
-				translate(translation)
-				scale(scaleFactor)
+				cameraMatrix = cameraMatrix.transform {
+					translate(translation)
+					scale(scaleFactor)
+				}
 			}
 		}
 	}

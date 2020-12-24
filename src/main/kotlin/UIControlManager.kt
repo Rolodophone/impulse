@@ -11,8 +11,6 @@ val UIControlManager = pg.controlManager {
 		width = 260.px
 		display = Display.FLEX
 		flexDirection = FlexDirection.Column
-		paddingLeft = 7.px
-		paddingRight = 7.px
 		background = Color.RGBa(ColorRGBa.GRAY)
 	}
 
@@ -78,6 +76,14 @@ val UIControlManager = pg.controlManager {
 			div("horiz-line") {}
 
 			div("options-tab") {
+				toggle {
+					id = "ground-button"
+					label = "Ground"
+					events.valueChanged.listen {
+						if (value) entities.add(Ground)
+						else entities.remove(Ground)
+					}
+				}
 			}
 
 			div("edit-tab") {
