@@ -8,10 +8,11 @@ object Ground: Entity {
 
 	override fun draw() {
 		pg.drawer.isolated {
+			model = Matrix44.IDENTITY
 			view = Matrix44.IDENTITY
 			fill = ColorRGBa.WHITE
 			stroke = null
-			rectangle(0.0, (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y, width.toDouble(), height - (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y)
+			rectangle(worldViewBounds.x, (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y, worldViewBounds.width, height - (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y)
 		}
 	}
 }
