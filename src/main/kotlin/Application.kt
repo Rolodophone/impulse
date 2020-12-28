@@ -58,6 +58,9 @@ fun main() = application {
 				}
 			}
 
+			//update info overlay
+			InfoOverlay.update()
+
 			//draw bodies
 			drawer.isolated {
 				stroke = null
@@ -71,8 +74,13 @@ fun main() = application {
 			if (findElem<Toggle>("grid-button").value) {
 				drawer.isolated { Grid.draw(cameraMatrix) }
 			}
+
+			//draw info overlay
+			drawer.isolated { InfoOverlay.draw() }
 		}
 
+
+		//handle panning
 		mouse.dragged.listen { mouseEvent ->
 			if (mouseEvent.button == MouseButton.RIGHT && mouse.position in worldViewBounds) {
 				//convert mouse displacement in view coordinates to displacement in world coordinates
@@ -81,6 +89,8 @@ fun main() = application {
 			}
 		}
 
+
+		//handle zooming with scroll wheel
 		mouse.scrolled.listen { mouseEvent ->
 			if (mouse.position in worldViewBounds) {
 				val scaleFactor = 1.2.pow(mouseEvent.rotation.y)
