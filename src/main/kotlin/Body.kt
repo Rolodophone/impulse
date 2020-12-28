@@ -21,11 +21,15 @@ abstract class Body: Entity {
     private lateinit var modelMatrix: Matrix44
 
 
-    override fun update() {
+    override fun react() {
+        //apply acceleration and velocity
         velocity += acceleration * pg.deltaTime
         position += velocity * pg.deltaTime
 
         modelMatrix = transform { translate(position) }
+
+        //reset acceleration
+        acceleration = Vector2.ZERO
     }
 
     override fun draw() {
@@ -33,7 +37,7 @@ abstract class Body: Entity {
         pg.drawer.shape(shape)
     }
 
-    fun applyForce(force: Vector2) {
-
+    fun exertForce(force: Vector2) {
+        acceleration += force
     }
 }

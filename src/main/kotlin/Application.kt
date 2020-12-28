@@ -47,7 +47,8 @@ fun main() = application {
 		//main loop
 		extend {
 			//update bodies
-			entities.forEach { it.update() }
+			entities.forEach { it.affect() }
+			entities.forEach { it.react() }
 
 			entities.forEachIndexed { i, entity ->
 				if (entity is Body) {

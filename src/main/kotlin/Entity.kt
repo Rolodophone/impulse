@@ -1,4 +1,5 @@
 interface Entity {
-	fun update() {}
+	fun affect() {}
+	fun react() {}
 	fun draw() {}
 }
