@@ -14,6 +14,10 @@ val UIControlManager = pg.controlManager {
 		background = Color.RGBa(ColorRGBa.GRAY)
 	}
 
+	styleSheet(has class_ "tab-button") {
+		borderWidth = 1.px
+	}
+
 	styleSheet(has class_ "edit-button") {
 		borderColor = Color.RGBa(ColorRGBa.WHITE)
 	}
@@ -35,7 +39,7 @@ val UIControlManager = pg.controlManager {
 	layout {
 		div("side-bar") {
 			div {
-				button("options-button") {
+				button("tab-button", "options-button") {
 					id = "options-button"
 					label = "Options"
 					events.clicked.listen {
@@ -47,7 +51,7 @@ val UIControlManager = pg.controlManager {
 						styleSheet(has class_ "view-tab") { display = Display.NONE }
 					}
 				}
-				button("edit-button") {
+				button("tab-button", "edit-button") {
 					id = "edit-button"
 					label = "Edit"
 					events.clicked.listen {
@@ -59,7 +63,7 @@ val UIControlManager = pg.controlManager {
 						styleSheet(has class_ "view-tab") { display = Display.NONE }
 					}
 				}
-				button("view-button") {
+				button("tab-button", "view-button") {
 					id = "view-button"
 					label = "View"
 					events.clicked.listen {
