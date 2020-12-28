@@ -60,8 +60,7 @@ fun main() = application {
 
 			//draw bodies
 			drawer.isolated {
-				strokeWeight = 0.0
-				stroke = ColorRGBa.TRANSPARENT
+				stroke = null
 				fill = ColorRGBa.WHITE
 				view = cameraMatrix
 
