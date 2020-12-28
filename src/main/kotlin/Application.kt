@@ -3,7 +3,6 @@ import org.openrndr.Program
 import org.openrndr.application
 import org.openrndr.color.ColorRGBa
 import org.openrndr.draw.isolated
-import org.openrndr.extra.noise.Random.simplex
 import org.openrndr.extra.olive.oliveProgram
 import org.openrndr.math.Vector2
 import org.openrndr.math.transforms.transform
@@ -35,7 +34,7 @@ fun main() = application {
 
 		//temp - add example bodies
 		entities.addAll(List(10) { CircleBody(
-			Vector2(nextDouble(width / cameraMatrix.c0r0), nextDouble(height / cameraMatrix.c0r0)),
+			Vector2(nextDouble(width / cameraMatrix.c0r0), -nextDouble(height / cameraMatrix.c0r0)),
 			nextDouble(0.1, 0.5)
 		) })
 
@@ -49,15 +48,6 @@ fun main() = application {
 			//update bodies
 			entities.forEach { it.affect() }
 			entities.forEach { it.react() }
-
-			entities.forEachIndexed { i, entity ->
-				if (entity is Body) {
-					entity.position += Vector2(
-						simplex((i * 2).toDouble(), seconds),
-						simplex((i * 2 + 1).toDouble(), seconds)
-					) * deltaTime
-				}
-			}
 
 			//update info overlay
 			InfoOverlay.update()
