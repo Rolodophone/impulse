@@ -83,6 +83,7 @@ val UIControlManager = pg.controlManager {
 				toggle {
 					id = "ground-button"
 					label = "Ground"
+					value = true
 					events.valueChanged.listen {
 						if (value) entities.add(Ground)
 						else entities.remove(Ground)
@@ -97,6 +98,7 @@ val UIControlManager = pg.controlManager {
 				toggle {
 					id = "grid-button"
 					label = "Grid"
+					value = true
 				}
 			}
 		}

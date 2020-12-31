@@ -13,7 +13,7 @@ import kotlin.random.Random.Default.nextDouble
 
 lateinit var pg: Program
 
-val entities = mutableListOf<Entity>()
+val entities = mutableListOf<Entity>(Ground)
 
 lateinit var worldViewBounds: Rectangle
 
