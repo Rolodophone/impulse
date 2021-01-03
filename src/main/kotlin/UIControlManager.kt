@@ -2,6 +2,7 @@ import org.openrndr.color.ColorRGBa
 import org.openrndr.panel.controlManager
 import org.openrndr.panel.elements.button
 import org.openrndr.panel.elements.div
+import org.openrndr.panel.elements.p
 import org.openrndr.panel.elements.toggle
 import org.openrndr.panel.style.*
 
@@ -34,6 +35,11 @@ val UIControlManager = pg.controlManager {
 
 	styleSheet(has class_ "view-tab") {
 		display = Display.NONE
+	}
+
+	styleSheet(has class_ "info-text") {
+		position = Position.ABSOLUTE
+		left = 3.px
 	}
 
 	layout {
@@ -101,9 +107,11 @@ val UIControlManager = pg.controlManager {
 					value = true
 				}
 			}
+
+			p("info-text") {
+				id = "info-text"
+				""
+			}
 		}
 	}
 }
-
-
-inline fun <reified T> findElem(id: String) = UIControlManager.body!!.elementWithId<T>(id)!!

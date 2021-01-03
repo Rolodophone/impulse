@@ -65,9 +65,6 @@ fun main() = application {
 			if (findElem<Toggle>("grid-button").value) {
 				drawer.isolated { Grid.draw(cameraMatrix) }
 			}
-
-			//draw info overlay
-			drawer.isolated { InfoOverlay.draw() }
 		}
 
 
