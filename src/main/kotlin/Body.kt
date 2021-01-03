@@ -5,39 +5,46 @@ import org.openrndr.shape.Shape
 
 abstract class Body: Entity {
 
-    /**
-     * The origin for the dimensions for [shape].
-     */
-    abstract var position: Vector2
+	/**
+	 * The origin for the dimensions for [shape].
+	 */
+	abstract var position: Vector2
 
-    /**
-     * The shape of the body. The origin is given by [position].
-     */
-    abstract val shape: Shape
+	/**
+	 * The shape of the body. The origin is given by [position].
+	 */
+	abstract val shape: Shape
 
-    var velocity = Vector2.ZERO
-    var acceleration = Vector2.ZERO
+	open var velocity = Vector2.ZERO
+	open var mass = 1.0
 
-    private lateinit var modelMatrix: Matrix44
+	private var cumulativeForce = Vector2.ZERO
+
+	private lateinit var modelMatrix: Matrix44
 
 
-    override fun react() {
-        //apply acceleration and velocity
-        velocity += acceleration * pg.deltaTime
-        position += velocity * pg.deltaTime
+	override fun react() {
+		//calculate acceleration
+		val acceleration = cumulativeForce / mass
 
-        modelMatrix = transform { translate(position) }
+		//apply acceleration and velocity
+		velocity += acceleration * pg.deltaTime
+		position += velocity * pg.deltaTime
 
-        //reset acceleration
-        acceleration = Vector2.ZERO
-    }
+		modelMatrix = transform { translate(position) }
 
-    override fun draw() {
-        pg.drawer.model = modelMatrix
-        pg.drawer.shape(shape)
-    }
+		//reset cumulative force
+		cumulativeForce = Vector2.ZERO
+	}
 
-    fun exertForce(force: Vector2) {
-        acceleration += force
-    }
+
+	override fun draw() {
+		pg.drawer.model = modelMatrix
+		pg.drawer.shape(shape)
+	}
+
+
+	override fun exertForce(force: Vector2) {
+		cumulativeForce += force
+	}
 }

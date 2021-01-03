@@ -7,7 +7,13 @@ object Ground: Entity {
 
 	override fun affect() {
 		entities.forEach {
-			if (it is Body) it.exertForce(Vector2(0.0, 9.81))
+
+			//don't affect itself
+			if (it != this) {
+
+				//exert gravity force
+				if (it is Body) it.exertForce(Vector2(0.0, 9.81 * it.mass))
+			}
 		}
 	}
 
@@ -15,7 +21,12 @@ object Ground: Entity {
 		pg.drawer.isolated {
 			model = Matrix44.IDENTITY
 			view = Matrix44.IDENTITY
-			rectangle(worldViewBounds.x, (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y, worldViewBounds.width, height - (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y)
+			rectangle(
+				worldViewBounds.x,
+				(cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y,
+				worldViewBounds.width,
+				height - (cameraMatrix * Vector4(0.0, 0.0, 0.0, 1.0)).y
+			)
 		}
 	}
 }
